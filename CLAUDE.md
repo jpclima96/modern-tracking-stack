@@ -185,6 +185,8 @@ Uma fase/PR só está "pronta" quando **todos** os itens abaixo são verdadeiros
 - [ ] Nenhuma decisão arquitetural substituída sem ADR justificando.
 - [ ] Sem PII, sem Python, sem web app não justificada.
 - [ ] Conteúdo de portfólio criado/atualizado quando a fase agrega narrativa.
+- [ ] **Edição da newsletter do LinkedIn criada em `content/newsletter/`** para a
+      fase (ver seção 16). Nenhuma fase é concluída sem o artigo correspondente.
 
 ## 14. Regras específicas para trabalhar pelo celular
 
@@ -209,13 +211,132 @@ IMPLEMENTAR→ criar/editar arquivos, mudanças pequenas
 TESTAR     → rodar QA / dbt / lint conforme a fase
 AUDITAR    → auto-revisão contra a Definition of Done
 DOCUMENTAR → atualizar README, docs, ADRs, dicionário
-CRIAR CONTEÚDO → registrar a narrativa de portfólio da fase
+CRIAR CONTEÚDO → escrever a edição da newsletter do LinkedIn da fase (seção 16)
 ```
 
 Nenhuma etapa é pulada. Se uma etapa não se aplica, isso é dito explicitamente
-na descrição do PR, com justificativa.
+na descrição do PR, com justificativa. A etapa **CRIAR CONTEÚDO** só se dá por
+cumprida com a edição da newsletter escrita em `content/newsletter/`.
+
+## 16. Newsletter do LinkedIn
+
+Toda fase do projeto deve gerar **obrigatoriamente** uma edição da newsletter do
+LinkedIn. Nenhuma fase pode ser considerada concluída sem que exista um artigo
+correspondente em:
+
+```
+content/newsletter/
+```
+
+A newsletter documenta a construção do projeto "Modern Tracking Stack" fase por
+fase.
+
+### Objetivo editorial
+
+A newsletter deve transformar cada etapa técnica do projeto em um conteúdo
+educacional aprofundado sobre: Tracking Engineering, Digital Analytics, Martech,
+Measurement, Analytics Engineering, Marketing Data Engineering e Data Quality.
+
+O conteúdo **não** deve ser apenas um resumo do que foi implementado. Cada edição
+deve:
+
+1. Apresentar um problema real de Tracking/Martech.
+2. Explicar por que esse problema importa.
+3. Apresentar os conceitos técnicos necessários.
+4. Mostrar como o problema foi abordado no projeto.
+5. Explicar as decisões arquiteturais tomadas.
+6. Mostrar exemplos concretos do repositório.
+7. Discutir trade-offs e alternativas.
+8. Apresentar os principais aprendizados da fase.
+
+### Fonte de verdade
+
+A newsletter é escrita **somente depois** da implementação da fase. Fontes
+primárias: código criado, documentação, arquitetura, testes executados, decisões
+tomadas, problemas encontrados e trade-offs identificados.
+
+**Nunca inventar:** resultados, métricas, incidentes, ganhos de performance,
+problemas ou aprendizados. Se uma afirmação não puder ser sustentada pelo
+projeto, ela não é apresentada como algo observado.
+
+### Idioma
+
+Todo o conteúdo é escrito em **português**. Termos técnicos consolidados podem
+permanecer em inglês quando isso melhorar a clareza — por exemplo: Data Layer,
+Tracking Plan, Measurement Plan, Data Quality, staging, marts, server-side,
+Analytics Engineering.
+
+### Estilo
+
+Técnica mas acessível, didática, aprofundada, prática, profissional, opinativa
+quando houver argumentos técnicos, e baseada no projeto.
+
+Evitar: linguagem genérica de IA, excesso de emojis, clickbait, frases
+motivacionais, listas superficiais, afirmações exageradas e transformar
+hipóteses em fatos.
+
+### Estrutura recomendada
+
+```
+# Título
+Abertura apresentando o problema.
+
+## O problema
+Explique o problema de negócio ou técnico.
+
+## O conceito
+Explique os conceitos necessários para entender a solução.
+
+## Como implementei no Modern Tracking Stack
+Use exemplos reais do projeto.
+
+## Arquitetura
+Apresente a arquitetura ou fluxo relevante.
+
+## Decisões e trade-offs
+Explique por que determinadas decisões foram tomadas e quais alternativas existiam.
+
+## O que aprendi
+Apresente os principais aprendizados da implementação.
+
+## Conclusão
+Conecte o aprendizado ao contexto mais amplo de Tracking e Martech.
+
+## Próxima parte
+Apresente brevemente o tema da próxima edição.
+```
+
+### Elementos adicionais
+
+Ao final do arquivo, incluir:
+
+- descrição curta da edição para publicação no LinkedIn;
+- sugestão de imagem de capa;
+- sugestão de diagrama técnico;
+- 3 títulos alternativos.
+
+### Série
+
+Todas as edições fazem parte da série **"Building a Modern Tracking Stack"**.
+Cada edição indica sua posição na série. Exemplos:
+
+```
+Building a Modern Tracking Stack #01
+Tracking não deveria começar no GTM
+
+Building a Modern Tracking Stack #02
+Seu Tracking Plan deveria ser um contrato de dados
+
+Building a Modern Tracking Stack #03
+Sua Data Layer deveria ser tratada como uma API
+```
+
+### Convenção de arquivo
+
+Um arquivo Markdown por edição, nomeado por número da série e slug:
+`content/newsletter/NN-slug.md` (ex.: `01-tracking-nao-comeca-no-gtm.md`).
 
 ---
 
-_Este é apenas a fundação. A stack ainda não foi implementada. As fases serão
-executadas uma a uma, seguindo o fluxo acima._
+_Este é o manual da fundação. A stack é implementada fase a fase, seguindo o
+fluxo acima, com uma edição da newsletter por fase._

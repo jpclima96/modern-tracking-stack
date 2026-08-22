@@ -1,0 +1,11 @@
+# Node.js
+node_modules/
+npm-debug.log*
+
+# dbt
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+
+# OS
+.DS_Store

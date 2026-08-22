@@ -1,0 +1,111 @@
+# Tracking Plan — Contrato de coleta (fonte de verdade)
+#
+# Este arquivo é a ÚNICA fonte de verdade dos eventos (ADR 0002, contract-first).
+# O schema.json é GERADO a partir daqui (qa/generate-schema.js) — não edite o
+# schema à mão.
+#
+# Regras:
+# - Nomes de eventos e parâmetros em snake_case.
+# - Sem PII (e-mail, nome, telefone em claro).
+# - Tipos válidos por parâmetro: string, integer, number, boolean.
+# - "required: true" marca parâmetro obrigatório.
+
+version: 1
+currency_note: Valores monetários usam ISO-4217 (ex. BRL) no parâmetro currency.
+
+events:
+  page_view:
+    description: Visualização de qualquer página do site.
+    parameters:
+      page_location:
+        type: string
+        required: true
+        description: URL completa da página.
+      page_title:
+        type: string
+        required: true
+        description: Título da página.
+
+  view_item:
+    description: Usuário visualiza a página de um produto.
+    parameters:
+      item_id:
+        type: string
+        required: true
+        description: SKU/identificador do produto.
+      item_name:
+        type: string
+        required: true
+        description: Nome do produto.
+      price:
+        type: number
+        required: true
+        description: Preço unitário do produto.
+      currency:
+        type: string
+        required: true
+        description: Moeda ISO-4217 (ex. BRL).
+
+  add_to_cart:
+    description: Usuário adiciona um item ao carrinho.
+    parameters:
+      item_id:
+        type: string
+        required: true
+        description: SKU/identificador do produto.
+      quantity:
+        type: integer
+        required: true
+        description: Quantidade adicionada.
+      value:
+        type: number
+        required: true
+        description: Valor total adicionado (price * quantity).
+      currency:
+        type: string
+        required: true
+        description: Moeda ISO-4217 (ex. BRL).
+
+  begin_checkout:
+    description: Usuário inicia o processo de checkout.
+    parameters:
+      value:
+        type: number
+        required: true
+        description: Valor total do carrinho no início do checkout.
+      currency:
+        type: string
+        required: true
+        description: Moeda ISO-4217 (ex. BRL).
+      num_items:
+        type: integer
+        required: true
+        description: Quantidade de itens no carrinho.
+
+  purchase:
+    description: Compra concluída com sucesso.
+    parameters:
+      transaction_id:
+        type: string
+        required: true
+        description: Identificador único da transação.
+      value:
+        type: number
+        required: true
+        description: Receita total da transação.
+      currency:
+        type: string
+        required: true
+        description: Moeda ISO-4217 (ex. BRL).
+      num_items:
+        type: integer
+        required: true
+        description: Quantidade de itens comprados.
+
+  sign_up:
+    description: Usuário cria uma conta.
+    parameters:
+      method:
+        type: string
+        required: true
+        description: Método de cadastro (ex. email, google, github).

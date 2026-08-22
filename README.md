@@ -33,7 +33,7 @@ SQL · BigQuery · dbt · GA4 · Google Tag Manager · Airbyte · JavaScript (tr
 
 | Fase | Nome | Foco | Status |
 |------|------|------|--------|
-| 0 | Fundação & Docs | Martech Architecture | 🟡 em andamento |
+| 0 | Fundação & Docs | Martech Architecture | ✅ concluída |
 | 1 | Tracking Plan (contrato) | Measurement | ⬜ planejada |
 | 2 | GTM + dataLayer | Tracking Engineering | ⬜ planejada |
 | 3 | QA de eventos (Node.js) | Data Quality | ⬜ planejada |

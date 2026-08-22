@@ -1,0 +1,16 @@
+{
+  "name": "mts-qa",
+  "version": "1.0.0",
+  "description": "QA em Node.js do Modern Tracking Stack: gera o schema.json a partir do tracking plan e valida a consistência do contrato.",
+  "type": "commonjs",
+  "scripts": {
+    "generate-schema": "node generate-schema.js",
+    "check": "node generate-schema.js --check",
+    "test": "node generate-schema.js --check"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "js-yaml": "^4.3.1"
+  }
+}

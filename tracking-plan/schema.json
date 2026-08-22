@@ -1,0 +1,246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://modern-tracking-stack/tracking-plan/schema.json",
+  "title": "Modern Tracking Stack — evento capturado",
+  "description": "Schema GERADO a partir de tracking-plan/events.yaml. Não editar à mão.",
+  "type": "object",
+  "properties": {
+    "event": {
+      "type": "string",
+      "enum": [
+        "page_view",
+        "view_item",
+        "add_to_cart",
+        "begin_checkout",
+        "purchase",
+        "sign_up"
+      ]
+    },
+    "params": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "event",
+    "params"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "event": {
+            "const": "page_view"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "type": "object",
+            "properties": {
+              "page_location": {
+                "type": "string",
+                "description": "URL completa da página."
+              },
+              "page_title": {
+                "type": "string",
+                "description": "Título da página."
+              }
+            },
+            "required": [
+              "page_location",
+              "page_title"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event": {
+            "const": "view_item"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "type": "object",
+            "properties": {
+              "item_id": {
+                "type": "string",
+                "description": "SKU/identificador do produto."
+              },
+              "item_name": {
+                "type": "string",
+                "description": "Nome do produto."
+              },
+              "price": {
+                "type": "number",
+                "description": "Preço unitário do produto."
+              },
+              "currency": {
+                "type": "string",
+                "description": "Moeda ISO-4217 (ex. BRL)."
+              }
+            },
+            "required": [
+              "item_id",
+              "item_name",
+              "price",
+              "currency"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event": {
+            "const": "add_to_cart"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "type": "object",
+            "properties": {
+              "item_id": {
+                "type": "string",
+                "description": "SKU/identificador do produto."
+              },
+              "quantity": {
+                "type": "integer",
+                "description": "Quantidade adicionada."
+              },
+              "value": {
+                "type": "number",
+                "description": "Valor total adicionado (price * quantity)."
+              },
+              "currency": {
+                "type": "string",
+                "description": "Moeda ISO-4217 (ex. BRL)."
+              }
+            },
+            "required": [
+              "item_id",
+              "quantity",
+              "value",
+              "currency"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event": {
+            "const": "begin_checkout"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "number",
+                "description": "Valor total do carrinho no início do checkout."
+              },
+              "currency": {
+                "type": "string",
+                "description": "Moeda ISO-4217 (ex. BRL)."
+              },
+              "num_items": {
+                "type": "integer",
+                "description": "Quantidade de itens no carrinho."
+              }
+            },
+            "required": [
+              "value",
+              "currency",
+              "num_items"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event": {
+            "const": "purchase"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "type": "object",
+            "properties": {
+              "transaction_id": {
+                "type": "string",
+                "description": "Identificador único da transação."
+              },
+              "value": {
+                "type": "number",
+                "description": "Receita total da transação."
+              },
+              "currency": {
+                "type": "string",
+                "description": "Moeda ISO-4217 (ex. BRL)."
+              },
+              "num_items": {
+                "type": "integer",
+                "description": "Quantidade de itens comprados."
+              }
+            },
+            "required": [
+              "transaction_id",
+              "value",
+              "currency",
+              "num_items"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event": {
+            "const": "sign_up"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "type": "object",
+            "properties": {
+              "method": {
+                "type": "string",
+                "description": "Método de cadastro (ex. email, google, github)."
+              }
+            },
+            "required": [
+              "method"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    }
+  ]
+}

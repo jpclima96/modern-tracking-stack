@@ -1,0 +1,67 @@
+Building a Modern Tracking Stack #03
+Por que arrumar a casa dos dados vem antes de medir
+
+Imagine um restaurante movimentado. O garçom anota o pedido num papelzinho e manda para a cozinha. Enquanto todos usam o mesmo tipo de comanda, com os campos sempre nos mesmos lugares, a cozinha entende tudo rápido. O problema começa quando cada garçom inventa seu próprio jeito de anotar. A cozinha passa a adivinhar, erra pratos e a conta não fecha.
+
+Medir o comportamento das pessoas num site é parecido. Alguém clica, compra, se cadastra. Esses acontecimentos precisam chegar às ferramentas de análise de um jeito organizado e sempre igual. Quando chegam bagunçados, os relatórios ficam errados e ninguém confia nos números.
+
+Nesta terceira parte do projeto, eu cuidei exatamente dessa "comanda padrão".
+
+
+O problema
+
+Na maioria dos sites, a ferramenta de medição tenta entender o que aconteceu olhando direto para a aparência da página: o texto de um botão, a posição de um preço, o nome de um elemento na tela.
+
+Isso funciona até o time de design mudar o visual do site, o que acontece o tempo todo. Quando o visual muda, a medição quebra sem avisar. Semanas depois, alguém percebe que as vendas no relatório não batem com as vendas de verdade.
+
+A causa é simples: a medição ficou presa à aparência do site. E aparência muda muito mais do que o significado das coisas. Um "adicionou ao carrinho" continua sendo um "adicionou ao carrinho", não importa a cor do botão.
+
+
+A ideia
+
+A solução é criar uma camada no meio do caminho, só para os dados. Em vez de a ferramenta adivinhar o que aconteceu olhando a tela, o próprio site avisa, de forma clara e organizada:
+
+"Aconteceu um adicionar ao carrinho. Produto SKU-123, quantidade 1, valor 59,90, moeda BRL."
+
+Essa camada é a comanda padrão do restaurante. Todo mundo escreve do mesmo jeito, e quem recebe entende na hora. No mundo do tracking, ela se chama Data Layer, e vale a pena tratá-la com o mesmo cuidado de uma peça central do sistema:
+
+- Sempre no mesmo formato combinado.
+- Um único ponto de contato entre o site e as ferramentas.
+- Estável mesmo quando o visual do site muda.
+
+
+Como fiz no projeto
+
+Eu já tinha, das etapas anteriores, um documento que define todos os eventos que o projeto mede e quais informações cada um carrega. Nesta etapa, usei esse documento como fonte única de verdade.
+
+A partir dele, o próprio sistema gera a descrição de como cada evento deve ser enviado e também exemplos prontos de cada um. Antes de aceitar qualquer exemplo, o sistema confere se ele bate com as regras definidas. Se algo estiver fora do combinado, ele acusa o erro na hora. Assim, a forma de coletar os dados nunca sai do que foi planejado.
+
+Também montei a configuração da ferramenta de tags (o Google Tag Manager) já pronta para importar. Para cada evento existe uma etiqueta e um gatilho correspondente, todos ligados a essa camada de dados, e nenhum deles depende da aparência da página.
+
+Por fim, criei uma página de demonstração bem simples, com um botão para cada evento. Testei num navegador automático: apareceram os seis botões e, ao clicar em "adicionar ao carrinho" e em "compra", esses dois eventos foram registrados exatamente como deveriam. Tudo sem precisar de conta em ferramenta externa e sem internet.
+
+
+As escolhas que fiz
+
+Preferi gerar a documentação a partir do combinado, em vez de escrever à mão. Escrever à mão é mais rápido no começo, mas com o tempo os dois lados sempre acabam diferentes. Gerando, eles ficam sempre em sintonia.
+
+Guardei duas versões da configuração: o arquivo técnico, para quem vai aplicar na ferramenta, e uma explicação em linguagem clara, para quem só quer entender. Uma serve para fazer, a outra para revisar.
+
+E mantive a página de demonstração o mais simples possível, só para mostrar a ideia funcionando, sem transformar isso num site de verdade.
+
+
+O que aprendi
+
+O mais importante desta etapa não foram as etiquetas nem os botões. Foi deixar claro que existe um lugar certo por onde os dados passam, combinado de antemão. É isso que protege a medição quando o site muda de cara.
+
+Também ficou claro que dá para testar medição sem nenhuma ferramenta externa. Um navegador simples foi suficiente para provar que os eventos certos estavam sendo enviados.
+
+
+Conclusão
+
+Quando a medição é frágil, quase sempre a razão é a mesma: ela foi amarrada à aparência do site. Criar essa camada organizada de dados, combinada e estável, é o que deixa a medição confiável. O resto das ferramentas passa a ser só quem lê essa comanda bem escrita.
+
+
+Próxima parte
+
+Já temos o combinado e a camada que envia os dados. Falta o conferente: alguém que verifique, na hora, se o que está sendo enviado respeita as regras. Na próxima edição eu mostro esse verificador e explico por que a qualidade dos dados começa já na coleta, bem antes de chegar aos relatórios.

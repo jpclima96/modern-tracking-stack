@@ -3,8 +3,8 @@
 Nas duas edições anteriores, defini o contrato: eventos tipados em YAML, com um
 JSON Schema gerado para validá-los. Faltava conectar esse contrato ao mundo real
 — ao site que produz os eventos e ao GTM que os consome. Nesta fase construí essa
-ponte. E a tese é direta: a **Data Layer** não é um detalhe de implementação do
-GTM. É uma **API** entre dois sistemas, e deveria ser tratada como tal.
+ponte. A tese é direta: vale a pena tratar a **Data Layer** como uma **API**
+entre dois sistemas, com contrato, formato estável e um único ponto de contato.
 
 ## O problema
 

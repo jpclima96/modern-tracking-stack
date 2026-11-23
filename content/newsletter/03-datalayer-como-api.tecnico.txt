@@ -1,0 +1,104 @@
+Building a Modern Tracking Stack #03
+Sua Data Layer deveria ser tratada como uma API
+
+Nas duas edições anteriores, defini o contrato: eventos com tipos definidos em YAML, acompanhados de um JSON Schema gerado para validá-los. Faltava ligar esse contrato ao mundo real, ou seja, ao site que produz os eventos e ao Google Tag Manager (GTM) que os consome. Nesta fase eu construí essa ponte. A tese é direta: vale a pena tratar a Data Layer como uma API entre dois sistemas, com contrato, formato estável e um único ponto de contato.
+
+
+O problema
+
+No setup mais comum, o GTM lê a página diretamente. Uma tag pega o texto de um botão, outra lê um atributo escondido no HTML, uma terceira usa um seletor CSS para achar o preço. Isso funciona bem até o time de front-end renomear uma classe, mudar o layout ou trocar de framework. Quando isso acontece, o tracking quebra em silêncio, e ninguém percebe até a receita no relatório não bater com a realidade.
+
+A causa de fundo é o acoplamento. Quando o GTM lê a estrutura da página, a coleta fica presa à aparência do site. E a aparência muda o tempo todo, enquanto o significado de negócio (o que é um add_to_cart) muda muito pouco. Misturar essas duas coisas faz com que qualquer mudança visual vire um risco para o tracking.
+
+
+O conceito
+
+A Data Layer é uma camada de dados estruturada: um objeto em JavaScript, o window.dataLayer, onde o site publica os eventos de negócio de forma explícita, independente de como a página foi desenhada. Em vez de o GTM adivinhar o que aconteceu olhando a estrutura da página, o próprio site declara o que aconteceu:
+
+  window.dataLayer.push({
+    event: "add_to_cart",
+    params: { item_id: "SKU-123", quantity: 1, value: 59.9, currency: "BRL" }
+  });
+
+Tratar isso como uma API significa três coisas:
+
+- Contrato explícito. O formato do push é especificado de antemão, não improvisado.
+- Um único ponto de integração. O GTM conversa apenas com a dataLayer, nunca com a estrutura da página. O site tem uma só responsabilidade: emitir os eventos certos.
+- Estabilidade independente do visual. Redesenhar a página não quebra o tracking, desde que os mesmos eventos continuem sendo empurrados.
+
+
+Como implementei no Modern Tracking Stack
+
+A especificação da dataLayer é gerada a partir do contrato da Fase 1, em vez de escrita à mão. O script qa/generate-datalayer.js lê o arquivo tracking-plan/events.yaml e produz dois artefatos:
+
+- gtm/datalayer-spec.md, com a documentação do push de cada evento;
+- gtm/examples/sample-events.json, com um exemplo de payload por evento.
+
+E vai além de apenas gerar: cada exemplo é validado contra o schema.json. Se um exemplo violasse o contrato, por um tipo errado ou um parâmetro faltando, a geração falharia. Com isso, a camada de coleta fica impedida de divergir do contrato.
+
+No GTM, o arquivo container.json (pronto para importar) materializa o fluxo. Para cada evento existe:
+
+- uma Data Layer Variable por parâmetro (por exemplo, a variável que lê params.value);
+- um Custom Event trigger que casa com o nome do evento;
+- uma GA4 Event tag que mapeia os parâmetros da dataLayer para o evento no GA4.
+
+Todas as tags leem a dataLayer, e nenhuma lê a estrutura da página. Verifiquei no QA que os seis eventos do contrato têm cobertura de um para um em tags e triggers, sem evento sem tag e sem tag sobrando.
+
+Por fim, montei uma página estática (gtm/examples/index.html) para demonstrar o mecanismo, com um botão que executa o push de cada evento. É uma página simples, sem framework e sem etapa de build, o único uso de web que a arquitetura do projeto permite. Rodei essa página num navegador headless e confirmei o comportamento: os seis botões apareceram e, ao clicar em add_to_cart e em purchase, o window.dataLayer terminou com exatamente esses dois eventos, na ordem. A API fez o que o contrato diz.
+
+
+Arquitetura
+
+O desacoplamento fica explícito no fluxo:
+
+  site -> dataLayer.push({event, params}) -> GTM trigger -> GA4 event tag -> GA4
+            ^                                    |
+            +---- contrato (events.yaml) --------+
+                  gera a spec e valida os exemplos
+
+A dataLayer é a fronteira. De um lado fica o site, livre para mudar de aparência. Do outro fica o GTM, que só precisa saber ler um objeto estável. O contrato governa os dois lados a partir da mesma fonte de verdade.
+
+Uma decisão de medição merece nota: a tag de configuração do GA4 está com sendPageView igual a false, e o page_view é enviado por uma tag de evento como qualquer outro. Assim, todos os eventos passam pelo mesmo caminho (dataLayer, trigger e tag), sem um caso especial para a visualização de página.
+
+
+Decisões e trade-offs
+
+Gerar a especificação da dataLayer em vez de escrevê-la. A alternativa seria manter o contrato em YAML e a documentação da dataLayer em arquivos separados, o que mais cedo ou mais tarde faz os dois divergirem. Ao gerar a spec e validar os exemplos contra o schema, pago o custo de um segundo script em Node.js para garantir que os dois andem sempre juntos.
+
+Container pronto para importar mais README explicativo. Um container.json sozinho é verboso e difícil de revisar numa tela de celular. Um texto sozinho não pode ser importado na ferramenta. Mantive os dois: o JSON para quem vai aplicar no GTM e o README para quem vai entender ou revisar. O custo é ter duas representações do mesmo setup, aceitável porque o README apenas descreve, sem duplicar lógica executável.
+
+Página estática simples. Seria fácil montar um site real para a demonstração, mas isso iria contra a restrição de não construir uma aplicação web sem necessidade. Uma página sem build já prova o mecanismo da dataLayer com o mínimo de complexidade.
+
+
+O que aprendi
+
+A fronteira é o que importa. O valor desta fase está em fixar a dataLayer como o único ponto de contato entre o site e o GTM. É essa fronteira que protege o tracking quando o visual do site muda.
+
+Gerar e validar fecha o ciclo do contrato. Na Fase 1, o contrato validava eventos. Agora ele também gera e valida a camada que produz esses eventos. O contrato deixou de ser só documentação e passou a ser a origem de código e configuração.
+
+Dá para testar tracking sem o GA4. Não precisei de conta no GA4 nem de internet para verificar o comportamento: um navegador headless e o window.dataLayer foram suficientes para provar que os eventos certos estão sendo enviados.
+
+
+Conclusão
+
+Tracking frágil quase sempre tem a mesma causa: a coleta amarrada à aparência da página. Tratar a Data Layer como uma API, com contrato, um único ponto de integração e estabilidade independente do visual, é o que deixa o tracking resiliente. Nesse arranjo, o GTM passa a ser apenas o consumidor bem-comportado de uma API que o contrato define.
+
+
+Próxima parte
+
+Já temos um contrato e uma API que o implementa. Falta o guarda que verifica, em tempo de execução, se o que é empurrado na dataLayer realmente respeita o contrato. Na próxima edição eu construo o QA de eventos em Node.js, o validador que recusa eventos fora do schema, e explico por que a qualidade dos dados começa na fronteira da coleta, bem antes do warehouse.
+
+
+---
+Descrição curta para o LinkedIn
+
+Tracking quebra quando o GTM lê a estrutura da página e o front-end muda o layout. Na edição #03 da série "Building a Modern Tracking Stack", mostro como tratar a Data Layer como uma API: uma especificação gerada a partir do contrato, exemplos validados contra o schema, e um container GTM em que nenhuma tag lê a estrutura da página, apenas a dataLayer. Inclui a verificação, feita num navegador headless, de que os eventos certos são realmente enviados.
+
+Sugestão de imagem de capa: uma fronteira vertical no centro; à esquerda "Site (visual que muda)", à direita "GTM e GA4"; no meio, uma faixa chamada dataLayer funcionando como contrato, com uma única seta atravessando.
+
+Sugestão de diagrama técnico: o fluxo site -> dataLayer.push -> GTM trigger -> GA4 event tag -> GA4, com o contrato (events.yaml) embaixo, ligado por setas à geração da spec e à validação dos exemplos.
+
+Títulos alternativos:
+1. Sua Data Layer deveria ser tratada como uma API
+2. Pare de deixar o GTM ler a estrutura da página: use a Data Layer como contrato
+3. Desacoplando tracking do visual com uma Data Layer gerada do contrato

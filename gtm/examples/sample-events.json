@@ -1,0 +1,50 @@
+[
+  {
+    "event": "page_view",
+    "params": {
+      "page_location": "https://exemplo.com/produto/sku-123",
+      "page_title": "Produto · Exemplo"
+    }
+  },
+  {
+    "event": "view_item",
+    "params": {
+      "item_id": "SKU-123",
+      "item_name": "Camiseta Exemplo",
+      "price": 59.9,
+      "currency": "BRL"
+    }
+  },
+  {
+    "event": "add_to_cart",
+    "params": {
+      "item_id": "SKU-123",
+      "quantity": 1,
+      "value": 59.9,
+      "currency": "BRL"
+    }
+  },
+  {
+    "event": "begin_checkout",
+    "params": {
+      "value": 59.9,
+      "currency": "BRL",
+      "num_items": 1
+    }
+  },
+  {
+    "event": "purchase",
+    "params": {
+      "transaction_id": "T-10001",
+      "value": 59.9,
+      "currency": "BRL",
+      "num_items": 1
+    }
+  },
+  {
+    "event": "sign_up",
+    "params": {
+      "method": "email"
+    }
+  }
+]

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Modern Tracking Stack — demo da dataLayer</title>
+
+    <!--
+      GTM snippet (placeholder). Substitua GTM-XXXXXXX pelo seu container real.
+      Em modo offline (ADR 0003) o container não precisa estar publicado:
+      esta página serve para demonstrar os pushes na dataLayer.
+    -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      // (GTM carregaria aqui; omitido para funcionar offline sem rede.)
+    </script>
+
+    <style>
+      :root { font-family: system-ui, sans-serif; line-height: 1.5; }
+      body { max-width: 720px; margin: 0 auto; padding: 16px; }
+      h1 { font-size: 1.25rem; }
+      button {
+        display: block; width: 100%; padding: 12px; margin: 8px 0;
+        font-size: 1rem; border: 1px solid #888; border-radius: 8px;
+        background: #f6f6f6; cursor: pointer;
+      }
+      button:active { background: #e5e5e5; }
+      #log {
+        margin-top: 16px; padding: 12px; background: #111; color: #0f0;
+        font-family: ui-monospace, monospace; font-size: 0.8rem;
+        border-radius: 8px; white-space: pre-wrap; word-break: break-word;
+      }
+      .hint { color: #555; font-size: 0.9rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Modern Tracking Stack — demo da dataLayer</h1>
+    <p class="hint">
+      Cada botão executa um <code>dataLayer.push</code> com um payload de exemplo
+      gerado a partir do Tracking Plan (<code>gtm/examples/sample-events.json</code>).
+      O log abaixo mostra o que o GTM receberia.
+    </p>
+
+    <div id="buttons">Carregando eventos…</div>
+
+    <h2 style="font-size: 1rem">dataLayer (últimos pushes)</h2>
+    <div id="log"></div>
+
+    <script>
+      const logEl = document.getElementById("log");
+
+      function render(obj) {
+        logEl.textContent =
+          JSON.stringify(obj, null, 2) + "\n\n" + logEl.textContent;
+      }
+
+      function pushEvent(sample) {
+        // dataLayer é o ÚNICO canal site -> GTM (CLAUDE.md, seção 6).
+        window.dataLayer.push(sample);
+        render(sample);
+      }
+
+      fetch("./sample-events.json")
+        .then((r) => r.json())
+        .then((samples) => {
+          const box = document.getElementById("buttons");
+          box.innerHTML = "";
+          samples.forEach((sample) => {
+            const btn = document.createElement("button");
+            btn.textContent = "push: " + sample.event;
+            btn.addEventListener("click", () => pushEvent(sample));
+            box.appendChild(btn);
+          });
+        })
+        .catch((err) => {
+          document.getElementById("buttons").textContent =
+            "Falha ao carregar sample-events.json: " + err.message;
+        });
+    </script>
+  </body>
+</html>

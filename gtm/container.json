@@ -1,0 +1,160 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2026-11-23 00:00:00",
+  "containerVersion": {
+    "path": "accounts/0/containers/0/versions/0",
+    "accountId": "0",
+    "containerId": "0",
+    "containerVersionId": "0",
+    "name": "Modern Tracking Stack",
+    "container": {
+      "accountId": "0",
+      "containerId": "0",
+      "name": "Modern Tracking Stack",
+      "publicId": "GTM-XXXXXXX",
+      "usageContext": ["WEB"],
+      "fingerprint": "0",
+      "tagManagerUrl": "https://tagmanager.google.com/"
+    },
+    "variable": [
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "1",
+        "name": "GA4 Measurement ID",
+        "type": "c",
+        "parameter": [
+          { "type": "TEMPLATE", "key": "value", "value": "G-XXXXXXXXXX" }
+        ],
+        "notes": "Measurement ID do GA4. Substituir pelo valor real no ambiente."
+      },
+      { "accountId": "0", "containerId": "0", "variableId": "2", "name": "DLV - page_location", "type": "v", "parameter": [ { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" }, { "type": "TEMPLATE", "key": "name", "value": "params.page_location" } ] },
+      { "accountId": "0", "containerId": "0", "variableId": "3", "name": "DLV - page_title", "type": "v", "parameter": [ { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" }, { "type": "TEMPLATE", "key": "name", "value": "params.page_title" } ] },
+      { "accountId": "0", "containerId": "0", "variableId": "4", "name": "DLV - item_id", "type": "v", "parameter": [ { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" }, { "type": "TEMPLATE", "key": "name", "value": "params.item_id" } ] },
+      { "accountId": "0", "containerId": "0", "variableId": "5", "name": "DLV - item_name", "type": "v", "parameter": [ { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" }, { "type": "TEMPLATE", "key": "name", "value": "params.item_name" } ] },
+      { "accountId": "0", "containerId": "0", "variableId": "6", "name": "DLV - price", "type": "v", "parameter": [ { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" }, { "type": "TEMPLATE", "key": "name", "value": "params.price" } ] },
+      { "accountId": "0", "containerId": "0", "variableId": "7", "name": "DLV - currency", "type": "v", "parameter": [ { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" }, { "type": "TEMPLATE", "key": "name", "value": "params.currency" } ] },
+      { "accountId": "0", "containerId": "0", "variableId": "8", "name": "DLV - quantity", "type": "v", "parameter": [ { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" }, { "type": "TEMPLATE", "key": "name", "value": "params.quantity" } ] },
+      { "accountId": "0", "containerId": "0", "variableId": "9", "name": "DLV - value", "type": "v", "parameter": [ { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" }, { "type": "TEMPLATE", "key": "name", "value": "params.value" } ] },
+      { "accountId": "0", "containerId": "0", "variableId": "10", "name": "DLV - num_items", "type": "v", "parameter": [ { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" }, { "type": "TEMPLATE", "key": "name", "value": "params.num_items" } ] },
+      { "accountId": "0", "containerId": "0", "variableId": "11", "name": "DLV - transaction_id", "type": "v", "parameter": [ { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" }, { "type": "TEMPLATE", "key": "name", "value": "params.transaction_id" } ] },
+      { "accountId": "0", "containerId": "0", "variableId": "12", "name": "DLV - method", "type": "v", "parameter": [ { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" }, { "type": "TEMPLATE", "key": "name", "value": "params.method" } ] }
+    ],
+    "trigger": [
+      {
+        "accountId": "0", "containerId": "0", "triggerId": "100",
+        "name": "Init - All Pages", "type": "INIT"
+      },
+      { "accountId": "0", "containerId": "0", "triggerId": "101", "name": "CE - page_view", "type": "CUSTOM_EVENT", "customEventFilter": [ { "type": "EQUALS", "parameter": [ { "type": "TEMPLATE", "key": "arg0", "value": "{{_event}}" }, { "type": "TEMPLATE", "key": "arg1", "value": "page_view" } ] } ] },
+      { "accountId": "0", "containerId": "0", "triggerId": "102", "name": "CE - view_item", "type": "CUSTOM_EVENT", "customEventFilter": [ { "type": "EQUALS", "parameter": [ { "type": "TEMPLATE", "key": "arg0", "value": "{{_event}}" }, { "type": "TEMPLATE", "key": "arg1", "value": "view_item" } ] } ] },
+      { "accountId": "0", "containerId": "0", "triggerId": "103", "name": "CE - add_to_cart", "type": "CUSTOM_EVENT", "customEventFilter": [ { "type": "EQUALS", "parameter": [ { "type": "TEMPLATE", "key": "arg0", "value": "{{_event}}" }, { "type": "TEMPLATE", "key": "arg1", "value": "add_to_cart" } ] } ] },
+      { "accountId": "0", "containerId": "0", "triggerId": "104", "name": "CE - begin_checkout", "type": "CUSTOM_EVENT", "customEventFilter": [ { "type": "EQUALS", "parameter": [ { "type": "TEMPLATE", "key": "arg0", "value": "{{_event}}" }, { "type": "TEMPLATE", "key": "arg1", "value": "begin_checkout" } ] } ] },
+      { "accountId": "0", "containerId": "0", "triggerId": "105", "name": "CE - purchase", "type": "CUSTOM_EVENT", "customEventFilter": [ { "type": "EQUALS", "parameter": [ { "type": "TEMPLATE", "key": "arg0", "value": "{{_event}}" }, { "type": "TEMPLATE", "key": "arg1", "value": "purchase" } ] } ] },
+      { "accountId": "0", "containerId": "0", "triggerId": "106", "name": "CE - sign_up", "type": "CUSTOM_EVENT", "customEventFilter": [ { "type": "EQUALS", "parameter": [ { "type": "TEMPLATE", "key": "arg0", "value": "{{_event}}" }, { "type": "TEMPLATE", "key": "arg1", "value": "sign_up" } ] } ] }
+    ],
+    "tag": [
+      {
+        "accountId": "0", "containerId": "0", "tagId": "1",
+        "name": "GA4 - Configuration",
+        "type": "gaawc",
+        "parameter": [
+          { "type": "TEMPLATE", "key": "measurementId", "value": "{{GA4 Measurement ID}}" },
+          { "type": "BOOLEAN", "key": "sendPageView", "value": "false" }
+        ],
+        "firingTriggerId": ["100"],
+        "notes": "Carrega o Google tag / configuração GA4 na inicialização. page_view é enviado pela tag de evento, não aqui."
+      },
+      {
+        "accountId": "0", "containerId": "0", "tagId": "2",
+        "name": "GA4 Event - page_view",
+        "type": "gaawe",
+        "parameter": [
+          { "type": "TEMPLATE", "key": "measurementId", "value": "{{GA4 Measurement ID}}" },
+          { "type": "TEMPLATE", "key": "eventName", "value": "page_view" },
+          { "type": "LIST", "key": "eventParameters", "list": [
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "page_location" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - page_location}}" } ] },
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "page_title" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - page_title}}" } ] }
+          ] }
+        ],
+        "firingTriggerId": ["101"]
+      },
+      {
+        "accountId": "0", "containerId": "0", "tagId": "3",
+        "name": "GA4 Event - view_item",
+        "type": "gaawe",
+        "parameter": [
+          { "type": "TEMPLATE", "key": "measurementId", "value": "{{GA4 Measurement ID}}" },
+          { "type": "TEMPLATE", "key": "eventName", "value": "view_item" },
+          { "type": "LIST", "key": "eventParameters", "list": [
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "item_id" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - item_id}}" } ] },
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "item_name" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - item_name}}" } ] },
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "price" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - price}}" } ] },
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "currency" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - currency}}" } ] }
+          ] }
+        ],
+        "firingTriggerId": ["102"]
+      },
+      {
+        "accountId": "0", "containerId": "0", "tagId": "4",
+        "name": "GA4 Event - add_to_cart",
+        "type": "gaawe",
+        "parameter": [
+          { "type": "TEMPLATE", "key": "measurementId", "value": "{{GA4 Measurement ID}}" },
+          { "type": "TEMPLATE", "key": "eventName", "value": "add_to_cart" },
+          { "type": "LIST", "key": "eventParameters", "list": [
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "item_id" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - item_id}}" } ] },
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "quantity" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - quantity}}" } ] },
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "value" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - value}}" } ] },
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "currency" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - currency}}" } ] }
+          ] }
+        ],
+        "firingTriggerId": ["103"]
+      },
+      {
+        "accountId": "0", "containerId": "0", "tagId": "5",
+        "name": "GA4 Event - begin_checkout",
+        "type": "gaawe",
+        "parameter": [
+          { "type": "TEMPLATE", "key": "measurementId", "value": "{{GA4 Measurement ID}}" },
+          { "type": "TEMPLATE", "key": "eventName", "value": "begin_checkout" },
+          { "type": "LIST", "key": "eventParameters", "list": [
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "value" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - value}}" } ] },
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "currency" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - currency}}" } ] },
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "num_items" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - num_items}}" } ] }
+          ] }
+        ],
+        "firingTriggerId": ["104"]
+      },
+      {
+        "accountId": "0", "containerId": "0", "tagId": "6",
+        "name": "GA4 Event - purchase",
+        "type": "gaawe",
+        "parameter": [
+          { "type": "TEMPLATE", "key": "measurementId", "value": "{{GA4 Measurement ID}}" },
+          { "type": "TEMPLATE", "key": "eventName", "value": "purchase" },
+          { "type": "LIST", "key": "eventParameters", "list": [
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "transaction_id" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - transaction_id}}" } ] },
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "value" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - value}}" } ] },
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "currency" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - currency}}" } ] },
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "num_items" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - num_items}}" } ] }
+          ] }
+        ],
+        "firingTriggerId": ["105"]
+      },
+      {
+        "accountId": "0", "containerId": "0", "tagId": "7",
+        "name": "GA4 Event - sign_up",
+        "type": "gaawe",
+        "parameter": [
+          { "type": "TEMPLATE", "key": "measurementId", "value": "{{GA4 Measurement ID}}" },
+          { "type": "TEMPLATE", "key": "eventName", "value": "sign_up" },
+          { "type": "LIST", "key": "eventParameters", "list": [
+            { "type": "MAP", "map": [ { "type": "TEMPLATE", "key": "name", "value": "method" }, { "type": "TEMPLATE", "key": "value", "value": "{{DLV - method}}" } ] }
+          ] }
+        ],
+        "firingTriggerId": ["106"]
+      }
+    ],
+    "fingerprint": "0"
+  }
+}

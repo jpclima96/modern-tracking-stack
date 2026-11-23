@@ -5,8 +5,10 @@
   "type": "commonjs",
   "scripts": {
     "generate-schema": "node generate-schema.js",
-    "check": "node generate-schema.js --check",
-    "test": "node generate-schema.js --check"
+    "generate-datalayer": "node generate-datalayer.js",
+    "generate": "node generate-schema.js && node generate-datalayer.js",
+    "check": "node generate-schema.js --check && node generate-datalayer.js --check",
+    "test": "npm run check"
   },
   "license": "MIT",
   "dependencies": {
